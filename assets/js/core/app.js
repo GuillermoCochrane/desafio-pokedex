@@ -50,10 +50,12 @@ async function handleSearch(searchedPokemonList) {
     }
 }
 
+// Función para resetear la búsqueda
 function resetSearch() {
+    showNotification('ℹ Mostrando todos los Pokemons', 'info');
     hiddenToggle("search-btn");
     hiddenToggle('reset-search');
-    changeContent('results-title', 'Todos los Pokemones');
+    changeContent('results-title', 'Todos los Pokemons');
     initialLoad();
 }
 
