@@ -2,20 +2,8 @@
 
 ## 🎯 **DÓNDE APLICAR NOTIFICACIONES (reemplazando consoles):**
 
-### **4. MODAL HANDLER - `modal_handler.js`**
-```javascript
-// En el catch del modal click
-showNotification('⚠️ Error cargando datos del Pokémon', 'warning');
-```
-
 ### **5. APP.JS - Búsquedas**
 ```javascript
-// En handleSearch - cuando no encuentra resultados
-if (pokemons.length === 0) {
-  showNotification('🔍 No se encontraron Pokémon', 'warning');
-  return;
-}
-
 // En resetSearch
 showNotification('🔄 Mostrando todos los Pokémon', 'info');
 ```

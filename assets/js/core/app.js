@@ -4,6 +4,7 @@ import { dataFetcher, searchDataFetcher } from './dataFetcher.js';
 import { infiniteScrollHandler } from './infiniteScrollHandler.js'
 import { initSearch } from './searchHandler.js';
 import { uiReset, hiddenToggle, changeContent } from '../utilities/dom.js';
+import { showNotification } from './notificationHandler.js';
 
 let nextUrl = null;
 
@@ -26,16 +27,26 @@ export async function loadMorePokemons() {
 // Función principal de búsqueda
 async function handleSearch(searchedPokemonList) {
     try {
+        showNotification("🔍 Buscando Pokémon...", "info");
+
         const {pokemons, nextPage} = await searchDataFetcher(searchedPokemonList);
+
+        if (pokemons.length === 0) {
+            showNotification("⚠️ No se encontraron Pokémon", "warning");
+            return; 
+        }
+
+        showNotification(`✅ ${pokemons.length} Pokémon encontrados`, "success");
+
         nextUrl = nextPage;
         uiReset();
         hiddenToggle("search-btn");
         hiddenToggle('reset-search');
-        changeContent('results-title', `Resultados de la búsqueda: ${searchedPokemonList.length}`);
+        changeContent('results-title', `${pokemons.length} Pokémon encontrados`);
         createCardSection(pokemons);
     } catch (error) {
-        console.error('❌ Pokémon no encontrado:', error);
-        showSearchSuggestions(searchTerm);
+        console.error('❌ Error en búsqueda:', error);
+        showNotification('❌ Error en la búsqueda', 'danger');
     }
 }
 
