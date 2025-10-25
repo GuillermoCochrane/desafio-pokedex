@@ -1,0 +1,6 @@
+#pokemonCarousel img {
+  width: 220px !important;
+  height: 220px; 
+  object-fit: contain;
+  margin: auto;
+}

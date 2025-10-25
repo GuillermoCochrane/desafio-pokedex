@@ -1,0 +1,187 @@
+.games-filter, .location-card {
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    overflow: hidden;
+    background: rgba(255,255,255,0.1);
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+
+    &:hover {
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    & summary {
+      color: white;
+      padding-block: 0.75rem;
+      padding-left: 1rem;
+      padding-right: 2.5rem;
+      font-weight: 600;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+      position: relative;
+      transition: all 0.3s ease;
+      border-radius: 12px ;
+
+      &::-webkit-details-marker {
+        display: none;
+      }
+      
+      &::after {
+        content: "✖";
+        transform: rotate(45deg);
+        font-size: 0.9em;
+        transition: transform 0.3s ease;
+        margin-left: 0.5rem;
+        filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.5));
+        position: absolute;
+        right: 1rem;
+
+        @media (max-width: 768px) {
+          font-size: 0.8em;
+        }
+      }
+
+      &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+
+      & span {
+        font-size: 1rem;
+        letter-spacing: 0.5px;
+        @media (max-width: 768px) {
+          font-size: 0.9rem;
+        }
+      }
+
+      & small {
+          font-size: 0.8rem;
+          opacity: 0.9;
+          margin-left: 0.5rem;
+      }
+
+      @media (max-width: 768px) {
+        font-size: 0.9rem;
+        text-align: center;
+      }
+    }
+
+    &[open] summary {
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+
+      &::after {
+        transform: rotate(90deg);
+      }
+    }
+
+    & nav#games-buttons, nav#version-buttons {
+      padding: 1rem;
+      background: rgba(255,255,255,0.95);
+      max-height: 300px;
+      overflow-y: auto;
+
+      & ::-webkit-scrollbar {
+        width: 6px;
+      }
+  
+      & ::-webkit-scrollbar-track {
+          background: rgba(0, 0, 0, 0.1);
+          border-radius: 3px;
+      }
+
+      & ::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 3px;
+
+            &:hover {
+              background: rgba(0, 0, 0, 0.5);;
+            }
+      }
+
+      & .btn {
+        transition: all 0.2s ease;
+        min-width: clamp(120px, 16%, 200px) !important;
+        color: var(--dark-font);
+
+        &:hover {
+            background-color: var(--games-button);
+            color: var(--font-color);
+            box-shadow: 0 2px 5px var(--games-button);
+        }
+
+        &.active {
+            background-color: var(--games-button);
+            color: var(--font-color);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 768px) {
+          max-width: 120px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        padding: 0.75rem;
+        justify-content: space-evenly !important;
+      }
+    }
+
+    @media (max-width: 768px) {
+      margin-bottom: 0.75rem;
+    }
+}
+
+#generation-header{
+  color: var(--font-color) !important;
+}
+
+/* Estilos para headers ordenables */
+#moves-table-header{
+  margin-inline: auto;
+
+  & th[data-sort-target] {
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+  }
+
+  /* Header activo */
+  & th.active-sort {
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    color: var(--solid_fighting);
+
+    /* Flechas con pseudo-elementos */
+    &[data-ascending="true"]::after {
+      position: absolute;
+      right: 1rem;
+      content: " ▼ ";
+      font-weight: bold;
+
+      @media (max-width: 992px) {
+        display: none;
+      }
+    }
+
+    &[data-ascending="false"]::after {
+      position: absolute;
+      right: 1rem;
+      content: " ▲ "; 
+      font-weight: bold;
+
+      @media (max-width: 992px) {
+        display: none;
+      }
+    }
+  }
+}

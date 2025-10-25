@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokedex</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <link rel="stylesheet" href="./assets/css/styles.css">
+  <link rel="icon" type="image/png" href="./assets/img/pokeball_favicon.png">
+</head>
+<body>
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top rounded-3">
+      <div class="container">
+        <a class="navbar-brand fs-2 fw-bold d-flex align-items-center gap-3" href="#">
+          <img src="./assets/img/pokeball.png" alt="Icono de Pokeball" width="35" height="35">
+          <span>Pokedex</span>
+        </a>
+        <div class="d-flex w-50 position-relative">
+          <form class="d-flex w-100" role="search" id="search-form">
+            <input class="form-control me-2" id="pokemon-search" type="search" placeholder="Buscar Pokémon..." aria-label="Search">
+            <button id="search-btn" class="btn btn-outline-light search-btn" type="submit">🔍</button>
+            <button id="reset-search" class="btn btn-outline-danger ms-2" type="button" title="Limpiar búsqueda" hidden> ✖ </button>
+          </form>
+          <aside id="search-results" class="position-absolute w-100">
+            <!-- Se renderizará aquí dinamicamente las sugerencias de búsqueda -->
+          </aside>
+        </div>
+      </div>
+      </div>
+    </nav>
+  </header>
+  <main class="pt-5 mt-2">
+      <h2 id="results-title" class="text-center text-light">Todos los Pokemones</h2>
+      <section id="pokemons" class="row justify-content-evenly p-4">
+        <!-- Acá redenrizamos las tarjetas -->
+      </section>
+      <section id="spinner" class="w-100 mx-auto p-3 mb-3" hidden>
+        <figure>
+          <img src="./assets/img/pokeball-spinner.png" alt="Loading..." style="margin: auto; display:block" width="100">
+          <p class="text-center mb-0 small">Cargando...</p>
+        </figure>
+      </section>    
+      <aside class="notification" id="notification">
+        Operación realizada con éxito
+      </aside>
+  </main>
+  <footer class="text-center text-danger fixed-bottom bg-dark">
+    <p class="mb-0 text-warning">Made with ❤️ by 👑<a href="https://github.com/GuillermoCochrane"><em class="text-danger">The King in the South</em> </a></p>
+  </footer>
+  <div class="modal fade" id="detallesModal" tabindex="-1" aria-labelledby="detallesModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content mx-auto">
+        <header class="modal-header py-2" id="modal-header">
+          <section class="w-100 d-flex justify-content-between align-items-center">
+            <span class="text-muted fw-bold fs-6" aria-describedby="pokemon-number">#001</span>
+            <h2 class="modal-title text-capitalize mb-0 fs-5">Bulbasaur</h2>
+            <nav class="d-flex gap-2" id="modal-types" aria-label="Tipos de Pokémon">
+              <!-- Badges de tipos dinámicos -->
+            </nav>
+          </section>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar modal"></button>
+        </header>
+        
+        <main class="modal-body">
+          <!-- navbar tabs -->
+          <nav class="nav nav-tabs" id="modalTabs" role="tablist">
+            <button class="nav-link active" id="características-tab" data-bs-toggle="tab" data-bs-target="#características" type="button" role="tab" aria-controls="características" aria-selected="false">Características</button>
+            <button class="nav-link " id="movimientos-tab" data-bs-toggle="tab" data-bs-target="#movimientos" type="button" role="tab" aria-controls="movimientos" aria-selected="true">Movimientos</button>
+            <button class="nav-link" id="habilidades-tab"  data-bs-toggle="tab" data-bs-target="#habilidades" type="button" role="tab" aria-controls="habilidades" aria-selected="false">Habilidades</button>
+            <button class="nav-link" id="ubicaciones-tab" data-bs-toggle="tab" data-bs-target="#ubicaciones" type="button" role="tab" aria-controls="ubicaciones" aria-selected="false">Ubicaciones</button>
+          </nav>
+          
+          <!-- Contenido de tabs -->
+          <article class="tab-content">
+            <section class="tab-pane fade show active" id="características" role="tabpanel" aria-labelledby="características-tab" tabindex="0">
+              <!-- Carrusel Bootstrap -->
+              <div id="pokemonCarousel" class="carousel slide w-75 mx-auto" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                  <Figure class="carousel-item active">
+                    <img src="" class="d-block w-100" alt="Vista frontal" id="carousel-front">
+                  </Figure>
+                  <figure class="carousel-item">
+                    <img src="" class="d-block w-100" alt="Vista trasera" id="carousel-back">
+                  </figure>
+                  <figure class="carousel-item">
+                    <img src="" class="d-block w-100" alt="Arte oficial" id="carousel-official">
+                  </figure>
+                </div>
+                <button class="carousel-control-prev font" type="button" data-bs-target="#pokemonCarousel" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon bg-dark bg-opacity-50 rounded-circle p-2" aria-hidden="true"></span>
+                  <span class="visually-hidden">Anterior</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#pokemonCarousel" data-bs-slide="next">
+                  <span class="carousel-control-next-icon bg-dark bg-opacity-50 rounded-circle p-2" aria-hidden="true"></span>
+                  <span class="visually-hidden">Siguiente</span>
+                </button>
+              </div>
+
+              <ul class="mt-2 row list-unstyled">
+
+                  <li class="stat-item col-4">
+                      <div class="d-flex justify-content-between small">
+                          <strong class="stat-name">ATK</strong>
+                          <span class="stat-value">
+                              <span class="stat-value-number text-primary" id="stat-attack-value">0</span>/
+                              <strong class="stat-value-max">255</strong>
+                          </span>
+                      </div>
+                      <progress id="stat-attack" value="0" max="255" class="w-100"></progress>
+                  </li>
+
+                  <li class="stat-item col-4">
+                      <div class="d-flex justify-content-between small">
+                          <strong class="stat-name">DEF</strong>
+                          <span class="stat-value">
+                              <span class="stat-value-number text-primary" id="stat-defense-value">0</span>/
+                              <strong class="stat-value-max">255</strong>
+                          </span>
+                      </div>
+                      <progress id="stat-defense" value="0" max="255" class="w-100"></progress>
+                  </li>
+
+                  <li class="stat-item col-4">
+                      <div class="d-flex justify-content-between small">
+                          <strong class="stat-name">HP</strong>
+                          <span class="stat-value">
+                              <span class="stat-value-number text-primary" id="stat-hp-value">0</span>/
+                              <strong class="stat-value-max">255</strong>
+                          </span>
+                      </div>
+                      <progress id="stat-hp" value="0" max="255" class="w-100"></progress>
+                  </li>
+
+                  <li class="stat-item col-4">
+                      <div class="d-flex justify-content-between small">
+                          <strong class="stat-name">SPD</strong>
+                          <span class="stat-value">
+                              <span class="stat-value-number text-primary" id="stat-speed-value">0</span>/
+                              <strong class="stat-value-max">255</strong>
+                          </span>
+                      </div>
+                      <progress id="stat-speed" value="0" max="255" class="w-100"></progress>
+                  </li>
+
+                  <li class="stat-item col-4">
+                      <div class="d-flex justify-content-between small">
+                          <strong class="stat-name">SAT</strong>
+                          <span class="stat-value">
+                              <span class="stat-value-number text-primary" id="stat-special-attack-value">0</span>/
+                              <strong class="stat-value-max">255</strong>
+                          </span>
+                      </div>
+                      <progress id="stat-special-attack" value="0" max="255" class="w-100"></progress>
+                  </li>
+
+                  <li class="stat-item col-4">
+                      <div class="d-flex justify-content-between small">
+                          <strong class="stat-name">SDF</strong>
+                          <span class="stat-value">
+                              <span class="stat-value-number text-primary" id="stat-special-defense-value">0</span>/
+                              <strong class="stat-value-max">255</strong>
+                      </div>
+                      <progress id="stat-special-defense" value="0" max="255" class="w-100"></progress>
+                  </li>
+              </ul>
+
+              <!-- Altura y Peso -->
+              <ul class="d-flex justify-content-around text-center my-2 list-unstyled">
+                  <li>
+                      <strong>Altura</strong>
+                      <div id="modal-height">0 m</div>
+                  </li>
+                  <li>
+                      <strong>Peso</strong>
+                      <div id="modal-weight">0 kg</div>
+                  </li>
+              </ul>
+            
+            </section>
+            <section class="tab-pane fade" id="movimientos" role="tabpanel" aria-labelledby="movimientos-tab" tabindex="0">
+              <!-- Botones de generaciones -->
+              <details class="games-filter">
+                <summary class="filter-title">
+                  <span>Filtrar por juego</span>
+                  <small class="text-muted">19 juegos disponibles</small>
+                </summary>
+                <nav class="d-flex flex-wrap gap-2 mt-3 px-2 justify-content-between" id="games-buttons">
+                  <!-- Botones se generan dinámicamente -->
+                </nav>
+              </details>
+              <!-- Tabla de movimientos -->
+              <div class="table-responsive">
+                <table class="table table-sm table-hover">
+                  <thead>
+                    <tr>
+                      <th colspan="4" class="text-center text-white" id="generation-header">
+                        Red / Blue
+                      </th>
+                    </tr>
+                    <tr id="moves-table-header">
+                      <th class=" w-25" data-sort-target="name" data-ascending="false">Movimiento</th>
+                      <th class="text-center active-sort w-25" data-sort-target="level" data-ascending="true">Métodos</th>
+                      <th class=" w-25" data-sort-target="name" data-ascending="false">Movimiento</th>
+                      <th class="text-center active-sort  w-25" data-sort-target="level" data-ascending="true">Métodos</th>
+                    </tr>
+                  </thead>
+                  <tbody id="moves-table-body">
+                    <!-- Datos dinámicos -->
+                  </tbody>
+                </table>
+              </div>
+            </section>
+            <section class="tab-pane fade" id="habilidades" role="tabpanel" aria-labelledby="habilidades-tab" tabindex="0">
+              <main class="abilities-container">
+                <h4 class="h6 mb-3">Habilidades</h4>
+                <ul id="abilities-list">
+                  <!-- Lista de habilidades generada dinámicamente -->
+                </ul>
+              </main>
+            </section>
+            <section class="tab-pane fade" id="ubicaciones" role="tabpanel" aria-labelledby="ubicaciones-tab" tabindex="0">
+              <!-- Lista de ubicaciones -->
+              <details class="games-filter">
+                <summary class="filter-title">
+                  <span>Filtrar por versión</span>
+                  <small class="text-muted">46 versiones disponibles</small>
+                </summary>
+                <aside class="w-75 my-3 mx-auto">
+                  <select name="method" id="encounter-method" class="form-select form-select-sm border-secondary rounded-3">
+                  </select>
+                </aside>
+                <nav class="d-flex flex-wrap gap-2 mt-3 px-2 justify-content-between" id="version-buttons">
+                  <!-- Botones se generan dinámicamente -->
+                </nav>
+              </details>
+              <div id="pokemon-locations">
+                <!-- Lista de ubicaciones generada dinámicamente -->
+              </div>
+            </section>
+          </article>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+  <script type="module" src="./assets/js/core/app.js"></script>
+</body>
+</html>

@@ -137,3 +137,12 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# Carpetas personalizadas
+references/
+tests-temp/
+experimentos/
+
+# Archivos de testing
+test.js
+prueba-*.js

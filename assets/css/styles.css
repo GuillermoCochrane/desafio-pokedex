@@ -1,0 +1,8 @@
+@import url(./base.css);
+@import url(./searchbar.css);
+@import url(./pokemon_cards.css);
+@import url(./modal/modal_base.css);
+@import url(./modal/modal_stats.css);
+@import url(./modal/modal_abilities.css);
+@import url(./modal/modal_moves.css);
+@import url(./modal/modal_locations.css);

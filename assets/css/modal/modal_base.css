@@ -1,0 +1,49 @@
+#detallesModal main article section {
+  height: 410px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Para móviles pequeños */
+#modal-header section {
+  margin: auto;
+
+  @media (max-width: 576px) {
+      flex-wrap: wrap;
+      justify-content: space-around !important;
+      gap: 0.5rem;
+
+      & span.text-muted,
+      & h2 {
+        flex-shrink: 0;
+        font-size: 1.25rem !important;
+      }
+      
+      & #modal-types {
+        order: 1;
+        width: 100%;
+        justify-content: center;
+        margin-top: 0.25rem;
+      }
+
+      & .btn-close {
+        position: static;
+      }
+  }
+}
+
+#modalTabs {
+  font-size: 0.9rem;
+
+  @media (max-width: 576px) {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr; /* 2 columnas */
+    gap: 0.25rem;
+
+    & .nav-link {
+      text-align: center;
+      font-size: 0.8rem;
+      padding: 0.5rem 0.25rem;
+    }
+  }
+}
