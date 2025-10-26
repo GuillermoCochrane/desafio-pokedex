@@ -15,14 +15,17 @@ export function modalCarouselData(sprites, name, id) {
   $front.alt = textData.front + name;
   $front.title =  textData.front + name;
   $front.style.viewTransitionName = `pokemon-image-${id}`;
+  $front.loading = "eager";
 
   $back.src = sprites.back_default;
   $back.alt = textData.back + name;
   $back.title = textData.back + name;
+  $back.loading = "lazy";
 
   $official.src = sprites.other['official-artwork'].front_default;
   $official.alt = textData.official + name;
   $official.title = textData.official + name;
+  $official.loading = "lazy";
 }
 
 // Función que carga las stats del modal
