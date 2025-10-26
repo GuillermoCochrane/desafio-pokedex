@@ -28,6 +28,7 @@ export function createImage(url = null , nombre = null, className = null, id = n
     const image = createElement('img', className, null, false, id);
     image.src = url;
     image.alt = nombre;
+    image.title = nombre;
     lazy && (image.loading = "lazy");
     return image;
 }
