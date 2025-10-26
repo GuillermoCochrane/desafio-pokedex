@@ -24,10 +24,11 @@ export function createElement(tagName, className = null, content = null, isHTML 
     return element;
 }
 
-export function createImage(url = null , nombre = null, className = null, id = null) {
+export function createImage(url = null , nombre = null, className = null, id = null, lazy = false) {
     const image = createElement('img', className, null, false, id);
     image.src = url;
     image.alt = nombre;
+    lazy && (image.loading = "lazy");
     return image;
 }
 
