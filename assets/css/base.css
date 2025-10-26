@@ -113,3 +113,15 @@ body {
         transform: translateX(0);
     }
 }
+
+/* Fallback para lazyload */
+img[loading="lazy"] {
+  background-color: rgba(255,255,255,0.05); /* placeholder discreto */
+  transition: opacity 0.2s ease-in-out;
+  opacity: 0;
+
+  &:not([src=""]) {
+    opacity: 1;
+    transition: opacity 0.2s ease-in-out;
+  }
+}
