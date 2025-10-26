@@ -32,7 +32,7 @@ function createCardInfo(nombre, id, tipos) {
 function createProductCard(pokemon) {
     const $productCard = createElement("article", "card product-card m-3", null, false, null, pokemon.types);
     const imageUrl = pokemon.sprites?.front_default || "./assets/img/default.png";
-    const $image = createImage(imageUrl, pokemon.name ? pokemon.name : "Pokemon Génerico", "card-img-top");
+    const $image = createImage(imageUrl, pokemon.name ? pokemon.name : "Pokemon Génerico", "card-img-top", null, true);
     $image.style.viewTransitionName = `pokemon-image-${pokemon.id}`;
     const $cardInfo = createCardInfo(pokemon.name, pokemon.id, pokemon.types);
     $productCard.append($image, $cardInfo);
