@@ -31,22 +31,18 @@ export async function dataFetcher(url = "https://pokeapi.co/api/v2/pokemon", mul
 
 // Helper para fetch de datos de mútiples Pokemons
 async function allDataFetcher(pokemonList) {
-  try {
-    const promises = pokemonList.map(pokemon => 
-      fetch(pokemon.url).then(res => {
-        if (!res.ok) throw new Error(`HTTP ${res.status} for ${pokemon.url}`);
-        return res.json();
-      })
-    );
-    return await Promise.all(promises);
-  } catch (error) {
-    console.error("❌ Error en allDataFetcher:", {
-      totalPokemon: pokemonList.length,
-      error: error.message,
-      failedUrl: error.message.includes('HTTP') ? 'Varios URLs' : 'URL específico'
-    });
-    throw error; //Propagar para manejo superior
+  const results = []; // Buffer para los resultados
+  for (const pokemon of pokemonList) {
+    await delay(50); // Esperar 50ms entre peticiones
+    try {
+      const response = await fetch(pokemon.url);
+      if (!response.ok) throw new Error(`HTTP ${response.status} para ${pokemon.url}`); // capturamos el error
+      results.push(await response.json()); // Si es correcto, lo agregamos al buffer
+    } catch (error) {
+      console.warn('⚠️ No se pudo cargar el Pokémon:', pokemon.name, error.message); //No hay que propagar error para no bloquear el flujo. Solo mostrar en consola
+    }
   }
+  return results
 }
 
 // Helper para fetch de detalles de habilidad
