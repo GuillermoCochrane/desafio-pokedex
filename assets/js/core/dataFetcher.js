@@ -77,3 +77,8 @@ export async function searchDataFetcher(dataToFetch = []) {
     throw error;
   }
 }
+
+// Helper para delay entre peticiones
+function delay(time) {
+  return new Promise(resolve => setTimeout(resolve, time));
+}
