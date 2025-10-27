@@ -30,20 +30,16 @@ export async function dataFetcher(url = "https://pokeapi.co/api/v2/pokemon", mul
 }
 
 // Helper para fetch de datos de mútiples Pokemons
-async function allDataFetcher(pokemonList) {
-  const results = []; // Buffer para los resultados
-  let control = 0; // Control de peticiones
-  for (const pokemon of pokemonList) {
-    if (control > 0 && control % 5 === 0) await delay(100);
-    try {
-      const response = await fetch(pokemon.url);
-      if (!response.ok) throw new Error(`HTTP ${response.status} para ${pokemon.url}`); // capturamos el error
-      results.push(await response.json()); // Si es correcto, lo agregamos al buffer
-    } catch (error) {
-      console.warn('⚠️ No se pudo cargar el Pokémon:', pokemon.name, error.message); //No hay que propagar error para no bloquear el flujo. Solo mostrar en consola
-    }
+async function allDataFetcher(pokemonList, batchSize = 5, delayTime = 100) {
+  const results = [];
+  for (let i = 0; i < pokemonList.length; i += batchSize) { //recorrremos el array de pokemons, en grupos de batchSize
+    const sliceLimit = Math.min(i + batchSize, pokemonList.length) // backdrop por si el batchSize no es multiplo
+    const stub = pokemonList.slice(i, sliceLimit); //recortamos el array de pokemons desde la posicion hasta la posicion + batchSize
+    const batchResults = await singleBatch(stub); //llamamos a singleBatch para procesar cada batch
+    results.push(...batchResults.filter(Boolean));
+    await delay(delayTime); // leve pausa entre tandas, opcional
   }
-  return results
+  return results;
 }
 
 // Helper para fetch de detalles de habilidad
