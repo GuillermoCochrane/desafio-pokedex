@@ -32,8 +32,9 @@ export async function dataFetcher(url = "https://pokeapi.co/api/v2/pokemon", mul
 // Helper para fetch de datos de mútiples Pokemons
 async function allDataFetcher(pokemonList) {
   const results = []; // Buffer para los resultados
+  let control = 0; // Control de peticiones
   for (const pokemon of pokemonList) {
-    await delay(50); // Esperar 50ms entre peticiones
+    if (control > 0 && control % 5 === 0) await delay(100);
     try {
       const response = await fetch(pokemon.url);
       if (!response.ok) throw new Error(`HTTP ${response.status} para ${pokemon.url}`); // capturamos el error
@@ -81,4 +82,19 @@ export async function searchDataFetcher(dataToFetch = []) {
 // Helper para delay entre peticiones
 function delay(time) {
   return new Promise(resolve => setTimeout(resolve, time));
+}
+
+// Helper para procesamiento de fetch por lotes
+async function singleBatch(batchList) {
+  const promises = batchList.map(async (pokemon) => {
+    try {
+      const res = await fetch(pokemon.url);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return await res.json();
+    } catch (err) {
+      console.warn('⚠️ No se pudo cargar:', pokemon.name, err.message);
+      return null;
+    }
+  });
+  return Promise.all(promises);
 }
