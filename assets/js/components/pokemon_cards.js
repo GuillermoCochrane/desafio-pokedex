@@ -34,6 +34,7 @@ function createProductCard(pokemon) {
     const imageUrl = pokemon.sprites?.front_default || "./assets/img/default.png";
     const $image = createImage(imageUrl, pokemon.name ? pokemon.name : "Pokemon Génerico", "card-img-top", null, true);
     $image.style.viewTransitionName = `pokemon-image-${pokemon.id}`;
+    $image.onerror = function() { $image.src = "./assets/img/fallback1.png"; };
     const $cardInfo = createCardInfo(pokemon.name, pokemon.id, pokemon.types);
     $productCard.append($image, $cardInfo);
     return $productCard;
