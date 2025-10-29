@@ -16,16 +16,19 @@ export function modalCarouselData(sprites, name, id) {
   $front.title =  textData.front + name;
   $front.style.viewTransitionName = `pokemon-image-${id}`;
   $front.loading = "eager";
+  $front.onerror = function() { $front.src = "../../assets/img/fallback1.png"; };
 
   $back.src = sprites.back_default;
   $back.alt = textData.back + name;
   $back.title = textData.back + name;
   $back.loading = "lazy";
+  $back.onerror = function() { $back.src = "../../assets/img/fallback2.png"; };
 
   $official.src = sprites.other['official-artwork'].front_default;
   $official.alt = textData.official + name;
   $official.title = textData.official + name;
   $official.loading = "lazy";
+  $official.onerror = function() { $official.src = "../../assets/img/fallback3.png"; };
 }
 
 // Función que carga las stats del modal
