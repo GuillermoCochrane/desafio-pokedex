@@ -28,3 +28,11 @@ export function saveCacheData(data = null, key = null) {
   localStorage.setItem(key, JSON.stringify(data));
   return true;
 }
+
+// Elimina datos de localStorage
+export function removeCacheData(key = null) {
+  if (!key) throw cacheErrorHandler("VALIDATION_ERROR", "Se requiere una clave para eliminar los datos", key);
+  
+  localStorage.removeItem(key);
+  return true;
+}
