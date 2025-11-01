@@ -1,5 +1,3 @@
-import { cache } from "react";
-
 // Manejo de errores
 function cacheErrorHandler(type= "GENERIC_ERROR", message= "Ha ocurrido un error inesperado", key= null, data= null) {
   const error = new Error(message);
@@ -14,12 +12,23 @@ function cacheErrorHandler(type= "GENERIC_ERROR", message= "Ha ocurrido un error
 
 // Recupera datos guardados en localStorage
 export function loadCacheData(key = null) {
-  if (!key) throw cacheErrorHandler("VALIDATION_ERROR", "Se requiere una clave para recuperar los datos", key);
-  
-  const savedData = localStorage.getItem(key);
-  if (!savedData) throw cacheErrorHandler("MISSING_CACHE", `No hay datos almacenados en: ${key}`, key);
-  
-  return JSON.parse(savedData);
+  try {
+    if (!key) throw cacheErrorHandler("VALIDATION_ERROR", "Se requiere una clave para recuperar los datos", key);
+    
+    const savedData = localStorage.getItem(key);
+    if (!savedData)  return null
+    const cacheData = JSON.parse(savedData);
+
+    if (!parsed.data || !parsed.timestamp) {
+      throw cacheErrorHandler("CORRUPT_CACHE", "Datos de cache corruptos", key, parsed);
+    }
+    
+    return cacheData;
+    
+  } catch (error) {
+    console.error("❌ Error en loadCacheData:", error);
+    throw error;
+  }
 }
 
 // Guarda datos en localStorage
