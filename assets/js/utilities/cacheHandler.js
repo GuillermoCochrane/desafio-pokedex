@@ -1,3 +1,5 @@
+import { cache } from "react";
+
 // Manejo de errores
 function cacheErrorHandler(type= "GENERIC_ERROR", message= "Ha ocurrido un error inesperado", key= null, data= null) {
   const error = new Error(message);
@@ -21,12 +23,23 @@ export function loadCacheData(key = null) {
 }
 
 // Guarda datos en localStorage
-export function saveCacheData(data = null, key = null) {
+export function saveCacheData(data = null, key = null, duration = null) {
   if (!data) throw cacheErrorHandler("VALIDATION_ERROR", "Se requieren los datos a guardar", null, data);
   if (!key) throw cacheErrorHandler("VALIDATION_ERROR", "Se requiere una clave para guardar los datos", key);
 
-  localStorage.setItem(key, JSON.stringify(data));
+  const cacheData = setCacheData(data, duration);
+
+  localStorage.setItem(key, JSON.stringify(cacheData));
   return true;
+}
+
+// Configura los datos a guardar en localStorage
+export function setCacheData(data = null, duration = null) {
+  return {
+      data: data,
+      timestamp: Date.now(),
+      duration: duration // la duración en milisegundos
+  }
 }
 
 // Elimina datos de localStorage
