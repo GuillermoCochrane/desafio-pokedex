@@ -19,7 +19,7 @@ export function loadCacheData(key = null) {
     if (!savedData)  return null
     const cacheData = JSON.parse(savedData);
 
-    if (!parsed.data || !parsed.timestamp) {
+    if (!cacheData.data || !cacheData.timestamp) {
       throw cacheErrorHandler("CORRUPT_CACHE", "Datos de cache corruptos", key, parsed);
     }
     
