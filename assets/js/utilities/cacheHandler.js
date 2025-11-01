@@ -65,12 +65,15 @@ export function getValidCacheData(key = null) {
   const data = {
     valid: false,
     data: null,
+    status:"MISSING_CACHE"
   }
 
-  if (cached && Date.now() - cached.timestamp < cached.duration) {
-    data.valid = true;
-    data.data = cached.data;
-  }
+  if (cached === null) return data;
+
+  const isExpired = cached.duration && (Date.now() - cached.timestamp > cached.duration);
+  data.valid = !isExpired;
+  data.data = cached.data;
+  data.status = isExpired ? "EXPIRED_CACHE" : "VALID_CACHE";
 
   return data;
 }
