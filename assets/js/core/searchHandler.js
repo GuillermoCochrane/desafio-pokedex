@@ -2,6 +2,7 @@ import { $, createElement } from "../utilities/dom.js";
 import { dataFetcher} from "./dataFetcher.js";
 import { createListItem } from "../components/searchbar.js";
 import { showNotification } from "./notificationHandler.js";
+import {loadCacheData, saveCacheData} from "../utilities/cacheHandler.js";
 
 let allPokemonList = [];
 let searchedPokemonList = [];
@@ -63,19 +64,40 @@ export function initSearch(handleSearch, resetSearch) {
 
 // Cargar lista completa para autocomplete
 async function loadAllPokemon() {
+    const CACHE_DURATION = 7 * 24 * 60 * 60 * 1000; // 1 Semana
+    const CACHE_KEY = "pokemon-list";
+    
     try {
+        // Verificar si hay datos en cache
+        const cached = loadCacheData(CACHE_KEY);
+        if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
+            allPokemonList = cached.data;
+            console.log("✅ Buffer desde cache:", allPokemonList.length);
+            showNotification("✅ Búsqueda lista desde cache", "success");
+            return;
+        }
+
+        // Si no hay datos en cache o expiraron, cargarlos de la API
         const data = await dataFetcher("https://pokeapi.co/api/v2/pokemon?limit=1302", false);
         allPokemonList = data.pokemons.results.map(pokemon => ({
             name: pokemon.name,
             id: pokemon.url.split("/").filter(Boolean).pop(),
             url: pokemon.url
         }));
-        showNotification("✅ Buffer de búsqueda cargado", "success");
-        console.log("📋 Lista de Pokemon cargada:", allPokemonList.length);
+
+        // Guardar datos en cache
+        saveCacheData({
+            data: allPokemonList,
+            timestamp: Date.now(),
+            duration: CACHE_DURATION
+        }, CACHE_KEY);
+
+        console.log("📋 Buffer de búsqueda actualizado:", allPokemonList.length);
+        showNotification("✅ Buffer de búsqueda actualizado", "success");
         
     } catch (error) {
-        console.error("❌ Error cargando lista de Pokemons:", error);
-        showNotification("❌ Error cargando lista de Pokemons", "danger");
+        console.error("❌ Error cargando Buffer de búsqueda:", error);
+        showNotification("❌ Error cargando Buffer de búsqueda", "danger");
     }
 }
 
