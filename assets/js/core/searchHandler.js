@@ -95,8 +95,7 @@ async function loadAllPokemon() {
         }));
 
         // Guardar datos en cache
-        const cacheData = setCacheData(allPokemonList, CACHE_DURATION);
-        saveCacheData(cacheData, CACHE_KEY);
+        saveCacheData(allPokemonList, CACHE_KEY, CACHE_DURATION);
 
         console.log("📋 Buffer de búsqueda actualizado:", allPokemonList.length);
         showNotification("✅ Buffer de búsqueda actualizado", "success");
