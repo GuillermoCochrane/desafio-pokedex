@@ -2,7 +2,7 @@ import { $, createElement } from "../utilities/dom.js";
 import { dataFetcher} from "./dataFetcher.js";
 import { createListItem } from "../components/searchbar.js";
 import { showNotification } from "./notificationHandler.js";
-import {loadCacheData, saveCacheData} from "../utilities/cacheHandler.js";
+import {getValidCacheData, saveCacheData, setCacheData} from "../utilities/cacheHandler.js";
 
 let allPokemonList = [];
 let searchedPokemonList = [];
@@ -69,12 +69,21 @@ async function loadAllPokemon() {
     
     try {
         // Verificar si hay datos en cache
-        const cached = loadCacheData(CACHE_KEY);
-        if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
+        const cached = getValidCacheData(CACHE_KEY);
+        if (cached.valid) {
             allPokemonList = cached.data;
             console.log("✅ Buffer desde cache:", allPokemonList.length);
-            showNotification("✅ Búsqueda lista desde cache", "success");
+            showNotification("✅ Buffer de búsqueda desde cache", "success");
             return;
+        } else {
+            if (cached.status === "EXPIRED_CACHE") {
+                console.log("⚠️ Buffer de búsqueda expirado:", allPokemonList.length);
+                showNotification("⚠️ Buffer de Búsqueda expirado", "warning");
+            }
+            if (cached.status === "MISSING_CACHE") {
+                console.log("⚠️ Buffer de búsqueda no encontrado:", allPokemonList.length);
+                showNotification("⚠️ Buffer de Búsqueda no encontrado", "warning");
+            }
         }
 
         // Si no hay datos en cache o expiraron, cargarlos de la API
@@ -86,11 +95,8 @@ async function loadAllPokemon() {
         }));
 
         // Guardar datos en cache
-        saveCacheData({
-            data: allPokemonList,
-            timestamp: Date.now(),
-            duration: CACHE_DURATION
-        }, CACHE_KEY);
+        const cacheData = setCacheData(allPokemonList, CACHE_DURATION);
+        saveCacheData(cacheData, CACHE_KEY);
 
         console.log("📋 Buffer de búsqueda actualizado:", allPokemonList.length);
         showNotification("✅ Buffer de búsqueda actualizado", "success");
