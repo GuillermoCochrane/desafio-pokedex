@@ -49,3 +49,19 @@ export function removeCacheData(key = null) {
   localStorage.removeItem(key);
   return true;
 }
+
+// Verifica si hay datos válidos en localStorage
+export function getValidCacheData(key = null) {
+  const cached = loadCacheData(key);
+  const data = {
+    valid: false,
+    data: null,
+  }
+
+  if (cached && Date.now() - cached.timestamp < cached.duration) {
+    data.valid = true;
+    data.data = cached.data;
+  }
+
+  return data;
+}
