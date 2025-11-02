@@ -1,6 +1,6 @@
 import { createCardSection } from '../components/pokemon_cards.js';
 import { modalHandler } from '../modal_handler/modal_handler.js';
-import { dataFetcher, searchDataFetcher } from './dataFetcher.js';
+import { dataFetcher, searchDataFetcher, initialDataFetcher } from './dataFetcher.js';
 import { infiniteScrollHandler } from './infiniteScrollHandler.js'
 import { initSearch } from './searchHandler.js';
 import { uiReset, hiddenToggle, changeContent } from '../utilities/dom.js';
@@ -62,11 +62,16 @@ function resetSearch() {
 
 // Función que carga los datos iniciales del sistema
 async function initialLoad() {
-    const {pokemons, nextPage} = await dataFetcher();
-    nextUrl = nextPage;
-    uiReset();
-    createCardSection(pokemons);
-    return pokemons;
+    try {
+        const {pokemons, nextPage} = await initialDataFetcher();
+        nextUrl = nextPage;
+        uiReset();
+        createCardSection(pokemons);
+        return pokemons;
+    } catch (error) {
+        console.error('❌ Error en initialLoad:', error);
+        showNotification('❌ Error en la carga de datos iniciales', 'danger');
+    }
 }
 
 document.addEventListener('DOMContentLoaded', createApp);
