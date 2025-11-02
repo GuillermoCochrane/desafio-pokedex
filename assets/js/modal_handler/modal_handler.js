@@ -1,7 +1,7 @@
 import {$, $$, applyBackgroundColor} from "../utilities/dom.js";
 import {  generateGameButtons } from "../components/modal/modal_moves.js";
 import { createModalTypesBadges } from "../components/modal/modal_abilities.js";
-import { dataFetcher } from "../core/dataFetcher.js";
+import { pokemonDataFetcher } from "../core/dataFetcher.js";
 import { games } from "../data/generationsData.js";
 import { modalCarouselData, modalStatsData } from "./modal_stats_handler.js";
 import { modalAbilitiesData } from "./modal_abilities_handler.js";
@@ -25,7 +25,7 @@ export function modalHandler() {
     try {
       showNotification("🔄 Cargando Pokémon...", "info");
       
-      const {pokemons} = await dataFetcher(`https://pokeapi.co/api/v2/pokemon/${id}`, false);
+      const {pokemons} = await pokemonDataFetcher(id);
       
       showNotification(`✅ ${pokemons.name} cargado`, "success");
       
