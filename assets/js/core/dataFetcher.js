@@ -1,4 +1,5 @@
 import { showNotification } from "./notificationHandler.js";
+import { getValidCacheData, saveCacheData, setCacheData } from "../utilities/cacheHandler.js";
 
 // Función principal para fetch de datos
 export async function dataFetcher(url = "https://pokeapi.co/api/v2/pokemon", multipleData = true) {
@@ -75,6 +76,45 @@ export async function searchDataFetcher(dataToFetch = []) {
   }
 }
 
+// Carga los datos iniciales del sistema, revisando si hay datos en cache
+export async function initialDataFetcher() {
+  const CACHE_DURATION = 7 * 24 * 60 * 60 * 1000; // 1 Semana
+  const CACHE_KEY = "initial-pokemon-list";
+  try {
+    // Verificar si hay datos en cache
+    const cached = getValidCacheData(CACHE_KEY);
+    if (cached.valid) {
+      const initialPokemonList = cached.data;
+      console.log("✅ Datos iniciales desde cache:", initialPokemonList.pokemons.length);
+      showNotification("✅ Carga de datos iniciales desde cache", "success");
+      return cached.data;
+    } else {
+      if (cached.status === "EXPIRED_CACHE") {
+        console.log("⚠️ Cache de datos inicial expirada");
+        showNotification("⚠️ Cache de datos inicial expirado", "warning");
+      }
+      if (cached.status === "MISSING_CACHE") {
+        console.log("⚠️ Cache de datos inicial no encontrado");
+        showNotification("⚠️ Cache de datos inicial no encontrado", "warning");
+      }
+    }
+
+    // Si no hay datos en cache o expiraron, cargarlos de la API
+    const response = await dataFetcher();
+    saveCacheData(response, CACHE_KEY, CACHE_DURATION);
+
+    console.log("📋 Carga de datos iniciales actualizado:", response.pokemons.length);
+    showNotification("✅ Carga de datos iniciales actualizado", "success");
+    return response;
+  } catch (error) {
+    console.error("❌ Error en initialDataFetcher:", {
+      error: error.message,
+      timestamp: new Date().toISOString()
+    });
+    throw error;
+  }
+}
+
 // Helper para delay entre peticiones
 function delay(time) {
   return new Promise(resolve => setTimeout(resolve, time));
@@ -94,3 +134,4 @@ async function singleBatch(batchList) {
   });
   return Promise.all(promises);
 }
+
