@@ -115,6 +115,36 @@ export async function initialDataFetcher() {
   }
 }
 
+// Carga los datos de un solo pokemon
+export async function pokemonDataFetcher(id) {
+  const CACHE_DURATION =  10 * 60 * 1000; // 10 minutos
+  const CACHE_KEY = "single-pokemon-cache";
+  try {
+    // Verificar si hay datos en cache
+    const cached = getValidCacheData(CACHE_KEY);
+    if (cached.valid && cached.data.id === parseInt(id)) {
+      const pokemonData = cached.data;
+      console.log("✅ Datos del desde cache del pokemon:", pokemonData.name);
+      showNotification("✅ Carga de datos del pokemon desde cache", "success");
+      return pokemonData;
+    } 
+    
+    // Si no hay datos en cache, es otro pokemon, o expiraron, cargarlos de la API
+    const response = await dataFetcher(`https://pokeapi.co/api/v2/pokemon/${id}`, false);
+    console.log(`🔄 Cargando Pokémon #${id}...`);
+    showNotification(`🔄 Cargando Pokémon #${id}...`, "success");
+    saveCacheData(response, CACHE_KEY, CACHE_DURATION);
+
+    return response;
+  } catch (error) {
+    console.error("❌ Error en pokemonDataFetcher:", {
+      error: error.message,
+      timestamp: new Date().toISOString()
+    });
+    throw error;
+  }
+}
+
 // Helper para delay entre peticiones
 function delay(time) {
   return new Promise(resolve => setTimeout(resolve, time));
