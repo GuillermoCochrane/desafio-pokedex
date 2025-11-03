@@ -1,40 +1,42 @@
 import { $, $$ } from "../utilities/dom.js";
 import { generateMethodSelect, displayLocations } from "../components/modal/modal_locations.js";
 import { generateVersionButtons } from "../components/modal/modal_moves.js";
-import { dataFetcher } from "../core/dataFetcher.js";
+import { pokemonEncountersHandler } from "../core/dataFetcher.js";
 import { individualGames } from "../data/generationsData.js";
+import { showNotification } from "../core/notificationHandler.js";
 
 let currentVersion = null;
 let currentMethod = null;
 
 // Función que carga las ubicaciones donde se encuentra el Pokemon
 export async function loadPokemonLocations(pokemonId, types, cachedEncounters, currentPokemon) {
-  // 1. Fetch (solo cuando no hay cache o cambió el Pokémon)
-  if (!cachedEncounters.length || currentPokemon.id !== pokemonId) {
-    const { pokemons: encounters } = await dataFetcher(
-      `https://pokeapi.co/api/v2/pokemon/${pokemonId}/encounters`,
-      false
-    );
-    cachedEncounters = encounters;
+  try {
+    // 1. Fetch (solo cuando no hay cache o cambió el Pokémon)
+    if (!cachedEncounters.length || currentPokemon.id !== pokemonId) {
+      const encounters = await pokemonEncountersHandler(pokemonId, processLocationData);
+      cachedEncounters = encounters;
+    }
+
+      // 2. filtramos los datos de las ubicaciones según el método y la versión
+      const filteredLocations = filterLocationsData(cachedEncounters, currentVersion, currentMethod);
+
+      // 3. extraemos los métodos de encuentro únicos para el select
+      const methods = getUniqueMethods(cachedEncounters);
+
+      // 4. generamos el control de filtrado
+      generateMethodSelect(methods, handleMethodChange, currentMethod);
+      generateVersionButtons(individualGames, handleVersionChange, `var(--solid_${types[0].type.name})`);
+
+      // 5. renderizamos los resultados
+      displayLocations(filteredLocations, individualGames, types);
+
+      // 6. actualizamos el botón activo
+      updateActiveVersionButton(currentVersion);
+
+  } catch (error) {
+    console.error("❌ Error cargando ubicaciones:", error);
+    showNotification("❌ Error cargando ubicaciones", "danger");
   }
-    // 2. procesamos los datos de las ubicaciones
-    const processedLocations = processLocationData(cachedEncounters);
-
-    // 3. filtramos los datos de las ubicaciones según el método y la versión
-    const filteredLocations = filterLocationsData(processedLocations, currentVersion, currentMethod);
-
-    // 4. extraemos los métodos de encuentro únicos para el select
-    const methods = getUniqueMethods(processedLocations);
-
-    // 5. generamos el control de filtrado
-    generateMethodSelect(methods, handleMethodChange, currentMethod);
-    generateVersionButtons(individualGames, handleVersionChange, `var(--solid_${types[0].type.name})`);
-
-    // 6. renderizamos los resultados
-    displayLocations(filteredLocations, individualGames, types);
-
-    // 7. actualizamos el botón activo
-    updateActiveVersionButton(currentVersion);
 }
 
 // Función que procesa los datos de las ubicaciones
