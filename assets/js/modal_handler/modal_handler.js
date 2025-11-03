@@ -50,7 +50,7 @@ export function loadModalData(pokemon) {
   sortingHandler(currentPokemon);
 
   generateGameButtons(games, game => loadGameMoves(game, pokemon.moves, pokemon.types));
-  loadPokemonLocations(pokemon.id, pokemon.types, cachedEncounters);
+  loadPokemonLocations(pokemon.id, pokemon.types, cachedEncounters, currentPokemon);
   loadGameMoves(games[0], pokemon.moves, pokemon.types); // Primer juego por defecto
 }
 

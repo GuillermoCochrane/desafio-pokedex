@@ -8,7 +8,7 @@ let currentVersion = null;
 let currentMethod = null;
 
 // Función que carga las ubicaciones donde se encuentra el Pokemon
-export async function loadPokemonLocations(pokemonId, types, cachedEncounters) {
+export async function loadPokemonLocations(pokemonId, types, cachedEncounters, currentPokemon) {
   // 1. Fetch (solo cuando no hay cache o cambió el Pokémon)
   if (!cachedEncounters.length || currentPokemon.id !== pokemonId) {
     const { pokemons: encounters } = await dataFetcher(
