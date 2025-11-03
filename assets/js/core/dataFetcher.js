@@ -145,6 +145,44 @@ export async function pokemonDataFetcher(id) {
   }
 }
 
+// Carga los datos de las encuentros de un Pokemon
+export async function pokemonEncountersHandler(pokemonId, processedLocations) {
+  const CACHE_DURATION = 10 * 60 * 1000; // 10 minutos
+  const CACHE_KEY = `pokemon-encounters`;
+  
+  try {
+    const cached = getValidCacheData(CACHE_KEY);
+    if (cached.valid && cached.data.id === parseInt(pokemonId)) {
+      console.log(`✅ Ubicaciones de Pokémon #${pokemonId} desde cache`);
+      showNotification(`✅ Carga ubicaciones del Pokemon #${pokemonId} desde cache`, "success");
+      return cached.data.encounters;
+    }
+
+    console.log(`🔄 Cargando ubicaciones de Pokémon #${pokemonId}...`);
+    showNotification(`🔄 Cargando ubicaciones de Pokémon #${pokemonId}...`, "info");
+    const { pokemons: encounters } = await dataFetcher(
+      `https://pokeapi.co/api/v2/pokemon/${pokemonId}/encounters`,
+      false
+    );
+
+    const processedEncounters = processedLocations(encounters);
+
+    const data = {
+      id: parseInt(pokemonId),
+      encounters: processedEncounters
+    };
+
+    // GUARDAR DATOS PROCESADOS (evita reprocesar)
+    saveCacheData(data, CACHE_KEY, CACHE_DURATION);
+    
+    return processedEncounters;
+    
+  } catch (error) {
+    console.error(`❌ Error cargando ubicaciones de ${pokemonId}:`, error);
+    throw error;
+  }
+}
+
 // Helper para delay entre peticiones
 function delay(time) {
   return new Promise(resolve => setTimeout(resolve, time));
