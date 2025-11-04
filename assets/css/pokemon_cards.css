@@ -14,14 +14,14 @@
   max-height: 6em;
   overflow-x: auto;
   overflow-y: clip;
-  text-overflow: ellipsis;  /* ver como hacer para que queden puntos suspensivos */
+  text-overflow: ellipsis; 
 }
 
 .product-card-title{
   height: 1.3em;
-  overflow-x: auto;
-  overflow-y: clip;
-  text-overflow: ellipsis;  /* ver como hacer para que queden puntos suspensivos */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis; 
 }
 
 .badge {
