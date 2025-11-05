@@ -51,6 +51,10 @@ body {
   margin: 0;
   padding: 20px;
   position: relative;
+
+  @supports (background:url("../img/bg.webp")) {
+    background: url('../img/bg.webp') no-repeat fixed center/cover;
+  }
 }
 
 picture {
