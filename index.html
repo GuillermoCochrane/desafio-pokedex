@@ -110,13 +110,25 @@
               <div id="pokemonCarousel" class="carousel slide w-75 mx-auto" data-bs-ride="carousel">
                 <div class="carousel-inner">
                   <Figure class="carousel-item active">
-                    <img src="./assets/img/fallback1.png" class="d-block w-100" alt="Vista frontal" id="carousel-front">
+                    <picture>
+                      <source srcset="./assets/img/fallback1.webp" type="image/webp" id="src-front">
+                      <img src="./assets/img/fallback1.png" class="d-block w-100" alt="Vista frontal" id="carousel-front" loading="eager">
+                    </picture>
+                    <!-- <img src="./assets/img/fallback1.png" class="d-block w-100" alt="Vista frontal" id="carousel-front"> -->
                   </Figure>
                   <figure class="carousel-item">
-                    <img src="./assets/img/fallback2.png" class="d-block w-100" alt="Vista trasera" id="carousel-back">
+                    <picture>
+                      <source srcset="./assets/img/fallback2.webp" type="image/webp" id="src-back">
+                      <img src="./assets/img/fallback2.png" class="d-block w-100" alt="Vista trasera" id="carousel-back" loading="eager">
+                    </picture>
+                    <!-- <img src="./assets/img/fallback2.png" class="d-block w-100" alt="Vista trasera" id="carousel-back"> -->
                   </figure>
                   <figure class="carousel-item">
-                    <img src="./assets/img/fallback3.png" class="d-block w-100" alt="Arte oficial" id="carousel-official">
+                    <picture>
+                      <source srcset="./assets/img/fallback3.webp" type="image/webp" id="src-official">
+                      <img src="./assets/img/fallback3.png" class="d-block w-100" alt="Arte oficial" id="carousel-official" loading="eager">
+                    </picture>
+                    <!-- <img src="./assets/img/fallback3.png" class="d-block w-100" alt="Arte oficial" id="carousel-official"> -->
                   </figure>
                 </div>
                 <button class="carousel-control-prev font" type="button" data-bs-target="#pokemonCarousel" data-bs-slide="prev">
