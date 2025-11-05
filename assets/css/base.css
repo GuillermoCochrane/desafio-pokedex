@@ -53,6 +53,12 @@ body {
   position: relative;
 }
 
+picture {
+  margin: auto;
+  display: flex;
+  align-items: center;
+}
+
 [hidden] {
   display: none !important;
 }
@@ -73,6 +79,9 @@ body {
   img {
     animation: spin 1.2s linear infinite;
     transform-origin: center;
+    margin: auto; 
+    display:block;
+    width: 100px;
   }
 }
 
