@@ -1,14 +1,17 @@
-import { $ } from '../utilities/dom.js';
+import { $ } from "../utilities/dom.js";
 
 // Función que carga los datos del carrusel del modal
 export function modalCarouselData(sprites, name, id) {
-  const $front = $('#carousel-front');
-  const $back = $('#carousel-back');
-  const $official = $('#carousel-official');
+  const $front = $("#carousel-front");
+  const $back = $("#carousel-back");
+  const $official = $("#carousel-official");
+  const $srcFront = $("#src-front");
+  const $srcBack = $("#src-back");
+  const $srcOfficial = $("#src-official");
   const textData = {
-      front: 'Vista frontal de ',
-      back: 'Vista trasera de',
-      official: 'Arte oficial de'
+      front: "Vista frontal de ",
+      back: "Vista trasera de ",
+      official: "Arte oficial de "
   }
 
   $front.src = sprites.front_default;
@@ -16,37 +19,50 @@ export function modalCarouselData(sprites, name, id) {
   $front.title =  textData.front + name;
   $front.style.viewTransitionName = `pokemon-image-${id}`;
   $front.loading = "eager";
-  $front.onerror = function() { $front.src = "../../img/fallback1.png"; };
+  $srcFront.srcset = ""
+  $front.onerror = function(e) {
+    console.log(e);
+    $front.src = "./assets/img/fallback1.png";
+    $srcFront.srcset = "./assets/img/fallback1.webp"
+  };
 
   $back.src = sprites.back_default;
   $back.alt = textData.back + name;
   $back.title = textData.back + name;
   $back.loading = "lazy";
-  $back.onerror = function() { $back.src = "../../img/fallback2.png"; };
+  $srcBack.srcset = ""
+  $back.onerror = function() { 
+    $back.src = "./assets/img/fallback2.png"; 
+    $srcBack.srcset = "./assets/img/fallback2.webp"
+  };
 
-  $official.src = sprites.other['official-artwork'].front_default;
+  $official.src = sprites.other["official-artwork"].front_default;
   $official.alt = textData.official + name;
   $official.title = textData.official + name;
   $official.loading = "lazy";
-  $official.onerror = function() { $official.src = "../../img/fallback3.png"; };
+  $srcOfficial.srcset = ""
+  $official.onerror = function() { 
+    $official.src = "./assets/img/fallback3.png";
+    $srcOfficial.srcset = "./assets/img/fallback3.webp";
+  };
 }
 
 // Función que carga las stats del modal
 export function modalStatsData(stats, height, weight) {
-  const $hp = $('#stat-hp');
-  const $hpValue = $('#stat-hp-value');
-  const $atk = $('#stat-attack');
-  const $atkValue = $('#stat-attack-value');
-  const $def = $('#stat-defense');
-  const $defValue = $('#stat-defense-value');
-  const $spd = $('#stat-speed');
-  const $spdValue = $('#stat-speed-value');
-  const $satk = $('#stat-special-attack');
-  const $satkValue = $('#stat-special-attack-value');
-  const $sdef = $('#stat-special-defense');
-  const $sdefValue = $('#stat-special-defense-value');
-  const $height = $('#modal-height');
-  const $weight = $('#modal-weight');
+  const $hp = $("#stat-hp");
+  const $hpValue = $("#stat-hp-value");
+  const $atk = $("#stat-attack");
+  const $atkValue = $("#stat-attack-value");
+  const $def = $("#stat-defense");
+  const $defValue = $("#stat-defense-value");
+  const $spd = $("#stat-speed");
+  const $spdValue = $("#stat-speed-value");
+  const $satk = $("#stat-special-attack");
+  const $satkValue = $("#stat-special-attack-value");
+  const $sdef = $("#stat-special-defense");
+  const $sdefValue = $("#stat-special-defense-value");
+  const $height = $("#modal-height");
+  const $weight = $("#modal-weight");
 
   $hp.value = stats[0].base_stat;
   $hpValue.textContent = stats[0].base_stat;
