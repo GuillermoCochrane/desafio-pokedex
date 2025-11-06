@@ -1,7 +1,7 @@
-import { $ } from "../utilities/dom.js";
+import { $, verifyFileExists } from "../utilities/dom.js";
 
 // Función que carga los datos del carrusel del modal
-export function modalCarouselData(sprites, name, id) {
+export async function modalCarouselData(sprites, name, id) {
   const $front = $("#carousel-front");
   const $back = $("#carousel-back");
   const $official = $("#carousel-official");
@@ -14,16 +14,24 @@ export function modalCarouselData(sprites, name, id) {
       official: "Arte oficial de "
   }
 
+  const frontWebp = "./assets/img/fallback1.webp";
+  const backWebp = "./assets/img/fallback2.webp";
+  const officialWebp = "./assets/img/fallback3.webp";
+  const frontWebpExists = await verifyFileExists(frontWebp);
+  const backWebpExists = await verifyFileExists(backWebp);
+  const officialWebpExists = await verifyFileExists(officialWebp);
+
   $front.src = sprites.front_default;
   $front.alt = textData.front + name;
   $front.title =  textData.front + name;
   $front.style.viewTransitionName = `pokemon-image-${id}`;
   $front.loading = "eager";
   $srcFront.srcset = ""
-  $front.onerror = function(e) {
-    console.log(e);
+  $front.onerror = function() {
+    if (frontWebpExists) {
+      $srcFront.srcset = frontWebp;
+    }
     $front.src = "./assets/img/fallback1.png";
-    $srcFront.srcset = "./assets/img/fallback1.webp"
   };
 
   $back.src = sprites.back_default;
@@ -32,8 +40,10 @@ export function modalCarouselData(sprites, name, id) {
   $back.loading = "lazy";
   $srcBack.srcset = ""
   $back.onerror = function() { 
+    if (backWebpExists) {
+      $srcBack.srcset = backWebp;
+    }
     $back.src = "./assets/img/fallback2.png"; 
-    $srcBack.srcset = "./assets/img/fallback2.webp"
   };
 
   $official.src = sprites.other["official-artwork"].front_default;
@@ -41,9 +51,11 @@ export function modalCarouselData(sprites, name, id) {
   $official.title = textData.official + name;
   $official.loading = "lazy";
   $srcOfficial.srcset = ""
-  $official.onerror = function() { 
+  $official.onerror = async function() { 
+    if (officialWebpExists) {
+      $srcOfficial.srcset = officialWebp;
+    }
     $official.src = "./assets/img/fallback3.png";
-    $srcOfficial.srcset = "./assets/img/fallback3.webp";
   };
 }
 
