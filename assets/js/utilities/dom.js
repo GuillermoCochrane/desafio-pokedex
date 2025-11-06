@@ -92,3 +92,13 @@ export function changeContent(id, text, isHTML = false) {
     const $element = $(`#${id}`);
     isHTML ? ($element.innerHTML = text) : ($element.textContent = text)
 }
+
+// Función auxiliar para verificar existencia de archivos
+export async function verifyFileExists(url) {
+    try {
+        const response = await fetch(url, { method: 'HEAD' });
+        return response.ok;
+    } catch {
+        return false;
+    }
+}
