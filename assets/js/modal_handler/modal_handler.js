@@ -13,7 +13,7 @@ let currentPokemon = null;
 let cachedEncounters = [];
 
 // Función que maneja el modal de Pokemon
-export function modalHandler() {
+export async function modalHandler() {
   const $container = $("#pokemons");
   
   $container.addEventListener("click", async (event) => {
@@ -29,7 +29,7 @@ export function modalHandler() {
       
       showNotification(`✅ ${pokemons.name} cargado`, "success");
       
-      loadModalData(pokemons);
+      await loadModalData(pokemons);
       
     } catch (error) {
       showNotification("❌ Error al cargar el Pokémon", "danger");
@@ -39,12 +39,12 @@ export function modalHandler() {
 }
 
 // Carga completa del modal
-export function loadModalData(pokemon) {
+export async function loadModalData(pokemon) {
   currentPokemon = pokemon;
   cachedEncounters = []; // Limpia cache para nuevo Pokémon
 
   modalHeaderData(pokemon.id, pokemon.name, pokemon.types);
-  modalCarouselData(pokemon.sprites, pokemon.name, pokemon.id);
+  await modalCarouselData(pokemon.sprites, pokemon.name, pokemon.id);
   modalStatsData(pokemon.stats, pokemon.height, pokemon.weight);
   modalAbilitiesData(pokemon.abilities);
   sortingHandler(currentPokemon);
