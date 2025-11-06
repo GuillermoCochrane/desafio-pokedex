@@ -10,9 +10,10 @@ let nextUrl = null;
 
 async function createApp() {
     const pokemons = await initialLoad();
-    modalHandler(pokemons);
+    await modalHandler(pokemons);
     infiniteScrollHandler(loadMorePokemons);
     initSearch(handleSearch, resetSearch);
+    webpGlobalErrorHandler();
 }
 
 // Cargar lista completa para autocomplete
@@ -72,6 +73,30 @@ async function initialLoad() {
         console.error('❌ Error en initialLoad:', error);
         showNotification('❌ Error en la carga de datos iniciales', 'danger');
     }
+}
+
+function webpGlobalErrorHandler() {
+    document.addEventListener("error", function(e) {
+        if (e.target.tagName === 'IMG') {
+            const $img = e.target;
+            // Verificar si viene de un <picture> con WebP
+            if ($img.parentElement?.tagName === 'PICTURE' && $img.currentSrc && $img.currentSrc?.includes('.webp')) {
+                // Buscar TODOS los sources
+                const $sources = $img.parentElement.querySelectorAll('source[srcset*=".webp"]');
+
+                for (const $source of $sources) {
+                    $source.removeAttribute('srcset');
+                    console.log("🔄 WebP desactivado:", $source.srcset);
+                    showNotification("🔄 WebP desactivado", "warning");
+                }
+
+                // Recargar la imagen ahora sin la competencia del WebP
+                setTimeout(() => {
+                    $img.src = $img.src; // Force reload
+                }, 10);
+            }
+        }
+    }, true);
 }
 
 document.addEventListener('DOMContentLoaded', createApp);
