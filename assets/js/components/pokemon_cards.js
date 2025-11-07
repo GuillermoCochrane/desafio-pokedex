@@ -1,4 +1,14 @@
-import { $, createElement, createImage, createButton,  createBadge } from "../utilities/dom.js";
+import { $, createElement, createImage, createButton,  createBadge, verifyFileExists } from "../utilities/dom.js";
+
+let fallbackWebpExists = null
+
+// Verificación de existencia de archivo WebP
+async function preloadWebPCheck() {
+    if (fallbackWebpExists === null) {
+        const fallbackWebp = "./assets/img/default.webp";
+        fallbackWebpExists = await verifyFileExists(fallbackWebp);
+    }
+}
 
 // Crea componente del header de la tarjeta del Pokemon
 export function createCardHeader(id) {
