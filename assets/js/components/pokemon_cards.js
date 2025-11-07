@@ -38,6 +38,32 @@ function createCardInfo(nombre, id, tipos) {
     return $cardInfo;
 }
 
+// Crea componente de la imagen del Pokemon
+function createCardPicture(pokemon) { 
+    const $picture = createElement("picture")
+    $picture.className = "card-img-top";
+    const fallbackWebp = "./assets/img/default.webp";
+    const fallbackPng = "./assets/img/default.png";
+    
+    const $source = createElement("source")
+    $source.srcset = (pokemon.sprites?.front_default && fallbackWebpExists) ? "" : fallbackWebp;
+    $source.type = "image/webp";
+    
+    const imageUrl = pokemon.sprites?.front_default || fallbackPng;
+    const $image = createImage(imageUrl, pokemon.name ? pokemon.name : "Pokemon Génerico", "w-100", null, true);
+    $image.style.viewTransitionName = `pokemon-image-${pokemon.id}`;
+    
+    $image.onerror = function() { 
+        if (fallbackWebpExists) {
+            $source.srcset = fallbackWebp;
+        }
+        $image.src = fallbackPng;
+    };
+    
+    $picture.append($source, $image);
+    return $picture;
+}
+
 // Crea componente tarjeta de Pokemon
 function createProductCard(pokemon) {
     const $productCard = createElement("article", "card product-card m-3", null, false, null, pokemon.types);
