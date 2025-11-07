@@ -65,21 +65,9 @@ function createCardPicture(pokemon) {
 }
 
 // Crea componente tarjeta de Pokemon
-function createProductCard(pokemon) {
+function createProductCard(pokemon) { 
     const $productCard = createElement("article", "card product-card m-3", null, false, null, pokemon.types);
-    const $picture = createElement("picture")
-    $picture.className = "card-img-top";
-    const $source = createElement("source")
-    $source.scrset = pokemon.sprites?.front_default ? "" : "./assets/img/default.webp";
-    $source.type = "image/webp"
-    const imageUrl = pokemon.sprites?.front_default || "./assets/img/default.png";
-    const $image = createImage(imageUrl, pokemon.name ? pokemon.name : "Pokemon Génerico", "w-100", null, true);
-    $image.style.viewTransitionName = `pokemon-image-${pokemon.id}`;
-    $image.onerror = function() { 
-        $image.src = "./assets/img/default.png"; 
-        $source.scrset = "./assets/img/default.webp"
-    };
-    $picture.append($source, $image);
+    const $picture = createCardPicture(pokemon);
     const $cardInfo = createCardInfo(pokemon.name, pokemon.id, pokemon.types);
     $productCard.append($picture, $cardInfo);
     return $productCard;
