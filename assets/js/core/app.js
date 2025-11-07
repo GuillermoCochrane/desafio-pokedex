@@ -22,7 +22,7 @@ export async function loadMorePokemons() {
 
     const {pokemons, nextPage} = await dataFetcher(nextUrl);
     nextUrl = nextPage;
-    createCardSection(pokemons);
+    await createCardSection(pokemons);
 }
 
 // Función principal de búsqueda
@@ -44,7 +44,7 @@ async function handleSearch(searchedPokemonList) {
         hiddenToggle("search-btn");
         hiddenToggle('reset-search');
         changeContent('results-title', `${pokemons.length} Pokémon encontrados`);
-        createCardSection(pokemons);
+        await createCardSection(pokemons);
     } catch (error) {
         console.error('❌ Error en búsqueda:', error);
         showNotification('❌ Error en la búsqueda', 'danger');
@@ -67,7 +67,7 @@ async function initialLoad() {
         const {pokemons, nextPage} = await initialDataFetcher();
         nextUrl = nextPage;
         uiReset();
-        createCardSection(pokemons);
+        await createCardSection(pokemons);
         return pokemons;
     } catch (error) {
         console.error('❌ Error en initialLoad:', error);
