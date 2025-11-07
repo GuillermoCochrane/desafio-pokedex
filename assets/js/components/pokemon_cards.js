@@ -74,8 +74,14 @@ function createProductCard(pokemon) {
 }
 
 // Crea Seccion de tarjetas de Pokemon
-export function createCardSection(pokemones) {
+export async function createCardSection(pokemones) {
     const $section = $(`#pokemons`);
+
+    //Verifica existencia de archivo WebP
+    if (fallbackWebpExists === null) {
+        await preloadWebPCheck();
+    }
+
     for (const pokemon of pokemones) {
         const $productCard = createProductCard(pokemon);
         $section.append($productCard);
