@@ -34,6 +34,7 @@ Una Pokedex interactiva y moderna que demuestra habilidades avanzadas en JavaScr
 - **Ordenamiento dinámico** en tablas (click en headers)
 - **Procesamiento complejo** de datos de la PokeAPI
 - **Optimizaciones de performance** (batch processing, debouncing natural)
+- **Optimización de Imágenes**: Detección de soporte WebP con fallback automático a PNG y Lazy Loading nativo.
 
 ## 🛠️ Stack Tecnológico
 
@@ -46,6 +47,9 @@ Una Pokedex interactiva y moderna que demuestra habilidades avanzadas en JavaScr
 
 ## 🏃‍♂️ Cómo Ejecutar Localmente
 
+Aunque es un proyecto estático, se recomienda usar un servidor local para evitar problemas de CORS con los módulos ES6.
+
+### Opción 1: Con Node.js (Recomendado)
 ```bash
 # Clonar el repositorio
 git clone https://github.com/guillermocochrane/desafio-pokedex.git
@@ -53,10 +57,12 @@ git clone https://github.com/guillermocochrane/desafio-pokedex.git
 # Entrar al directorio
 cd desafio-pokedex
 
-# Abrir en el navegador (no requiere servidor)
-open index.html
-
+# Ejecutar con npx (no requiere instalación previa)
+npx serve .
 ```
+
+### Opción 2: VS Code
+Instalar la extensión **"Live Server"**, abrir `index.html` y dar click en "Go Live".
 
 ## 📁 Estructura del Proyecto
 
@@ -84,6 +90,7 @@ El proyecto está desplegado en **GitHub Pages** y se actualiza automáticamente
 2. **Arquitectura Modular**: Código mantenible y escalable sin overhead de build tools
 3. **Cache Estratégico**: Diferentes estrategias según tipo de dato (inicial: 1 semana, individual: 10min)
 4. **UX First**: Loading states, notificaciones, feedback constante al usuario
+5. **Performance de Imágenes**: Implementación de estrategia de carga adaptativa (WebP/PNG) para reducir el peso de la página sin sacrificar compatibilidad.
 
 ## 👨‍💻 Autor
 
